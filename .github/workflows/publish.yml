@@ -33,11 +33,7 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
             echo "Version ${PKG_VERSION} not yet published — will publish"
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish
         if: steps.check.outputs.exists == 'false'
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
