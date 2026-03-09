@@ -21,6 +21,9 @@ TotalReclaw gives your AI agent persistent, encrypted memory that works across s
 openclaw plugins install @totalreclaw/totalreclaw
 ```
 
+Or just ask your OpenClaw agent:
+> "Install the totalreclaw plugin"
+
 The plugin sets itself up on first run -- it will ask if you have an existing recovery phrase or need a new one.
 
 ### Other MCP-compatible agents
