@@ -1,0 +1,40 @@
+{
+  "name": "@totalreclaw/totalreclaw",
+  "version": "1.0.0",
+  "description": "Zero-knowledge encrypted memory vault for AI agents — the password manager for AI memory.",
+  "type": "module",
+  "license": "MIT",
+  "author": "TotalReclaw Team",
+  "homepage": "https://totalreclaw.xyz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/p-diogo/totalreclaw-plugin"
+  },
+  "keywords": [
+    "totalreclaw",
+    "openclaw",
+    "memory",
+    "e2ee",
+    "zero-knowledge",
+    "encryption",
+    "privacy",
+    "ai",
+    "agent"
+  ],
+  "dependencies": {
+    "@huggingface/transformers": "^3.8.1",
+    "@noble/hashes": "^2.0.1",
+    "@scure/bip39": "^2.0.1",
+    "permissionless": "^0.3.4",
+    "porter-stemmer": "^0.9.1",
+    "viem": "^2.46.3"
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
