@@ -1,6 +1,6 @@
 {
   "name": "@totalreclaw/totalreclaw",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Zero-knowledge encrypted memory vault for AI agents — the password manager for AI memory.",
   "type": "module",
   "license": "MIT",
@@ -27,6 +27,7 @@
   },
   "files": [
     "dist/",
+    "openclaw.plugin.json",
     "SKILL.md",
     "README.md",
     "porter-stemmer.d.ts"

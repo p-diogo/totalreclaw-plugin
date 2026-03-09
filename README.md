@@ -78,7 +78,7 @@ Your recovery phrase is a 12-word BIP-39 mnemonic -- like a crypto wallet seed. 
 | `TOTALRECLAW_MASTER_PASSWORD` | *(required)* | 12-word BIP-39 recovery phrase |
 | `TOTALRECLAW_SERVER_URL` | `https://api.totalreclaw.xyz` | Relay server URL |
 | `TOTALRECLAW_SUBGRAPH_MODE` | `true` | Enable on-chain storage |
-| `TOTALRECLAW_EXTRACT_EVERY_TURNS` | `1` | Turns between automatic extractions |
+| `TOTALRECLAW_EXTRACT_EVERY_TURNS` | `5` | Turns between automatic extractions |
 
 ## Comparison
 
