@@ -82,8 +82,8 @@ Your recovery phrase is a 12-word BIP-39 mnemonic -- like a crypto wallet seed. 
 
 ## Comparison
 
-| Feature | TotalReclaw | agentmemory |
-|---------|-------------|-------------|
+| Feature | TotalReclaw | Mem0 |
+|---------|-------------|------|
 | Encryption | Client-side (zero-knowledge) | Server-side (server can read) |
 | Data portability | One-click plaintext export | No export |
 | Key management | BIP-39 seed phrase (user-controlled) | Server-managed keys |

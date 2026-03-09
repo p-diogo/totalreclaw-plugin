@@ -1,7 +1,7 @@
 ---
 name: totalreclaw
 description: "Zero-knowledge encrypted memory vault for AI agents — the password manager for AI memory. Full E2EE: server never sees plaintext."
-version: 0.1.0
+version: 1.0.1
 author: TotalReclaw Team
 license: MIT
 homepage: https://github.com/p-diogo/totalreclaw
