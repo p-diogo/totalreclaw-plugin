@@ -15,12 +15,30 @@
  *   - For retrieval, queries should be prefixed with an instruction string
  *     (documents/passages should NOT be prefixed)
  *
- * Dependencies: @huggingface/transformers (handles model download, WordPiece
- * tokenization, ONNX inference, mean pooling, and normalization).
+ * Dependencies: @huggingface/transformers (optional — handles model download,
+ * WordPiece tokenization, ONNX inference, mean pooling, and normalization).
+ * When not available (e.g. bundled environments), embeddings are disabled and
+ * the plugin falls back to BM25-only ranking.
  */
 
-// @ts-ignore - @huggingface/transformers types may not be perfect
-import { pipeline, type FeatureExtractionPipeline } from '@huggingface/transformers';
+type FeatureExtractionPipeline = any;
+
+/** Dynamic import state for @huggingface/transformers */
+let pipelineFn: any = null;
+let loadFailed = false;
+
+async function loadPipeline(): Promise<any> {
+  if (loadFailed) return null;
+  if (pipelineFn) return pipelineFn;
+  try {
+    const mod = await import('@huggingface/transformers');
+    pipelineFn = mod.pipeline;
+    return pipelineFn;
+  } catch {
+    loadFailed = true;
+    return null;
+  }
+}
 
 /** ONNX-optimized bge-small-en-v1.5 from HuggingFace Hub. */
 const MODEL_ID = 'Xenova/bge-small-en-v1.5';
@@ -45,6 +63,10 @@ let extractor: FeatureExtractionPipeline | null = null;
  * On first call, downloads and loads the ONNX model (~33.8MB, cached).
  * Subsequent calls reuse the loaded model and run in ~15ms.
  *
+ * Returns null if @huggingface/transformers is not available (e.g. in bundled
+ * environments where the optional dependency is not installed). In that case,
+ * the plugin continues to work with BM25-only ranking.
+ *
  * For bge-small-en-v1.5, queries should set `isQuery: true` to prepend the
  * retrieval instruction prefix. Documents being stored should use the default
  * (`isQuery: false`) so no prefix is added.
@@ -53,14 +75,18 @@ let extractor: FeatureExtractionPipeline | null = null;
  * @param options - Optional settings.
  * @param options.isQuery - If true, prepend the BGE query instruction prefix
  *                          for improved retrieval accuracy (default: false).
- * @returns 384-dimensional normalized embedding as a number array.
+ * @returns 384-dimensional normalized embedding as a number array, or null
+ *          if the transformers library is not available.
  */
 export async function generateEmbedding(
   text: string,
   options?: { isQuery?: boolean },
-): Promise<number[]> {
+): Promise<number[] | null> {
+  const pl = await loadPipeline();
+  if (!pl) return null;
+
   if (!extractor) {
-    extractor = await pipeline('feature-extraction', MODEL_ID, {
+    extractor = await pl('feature-extraction', MODEL_ID, {
       // Use quantized (int8) model for smaller download (~33.8MB vs ~67MB)
       quantized: true,
     });

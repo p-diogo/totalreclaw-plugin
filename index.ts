@@ -432,8 +432,8 @@ function getLSHHasher(logger: OpenClawPluginApi['logger']): LSHHasher | null {
  * Generate an embedding for the given text and compute LSH bucket hashes.
  *
  * Returns null if embedding generation fails (provider doesn't support it,
- * network error, etc.). In that case, the caller should fall back to
- * word-only blind indices.
+ * network error, transformers library not available, etc.). In that case,
+ * the caller should fall back to word-only blind indices.
  */
 async function generateEmbeddingAndLSH(
   text: string,
@@ -441,6 +441,9 @@ async function generateEmbeddingAndLSH(
 ): Promise<{ embedding: number[]; lshBuckets: string[]; encryptedEmbedding: string } | null> {
   try {
     const embedding = await generateEmbedding(text);
+
+    // generateEmbedding returns null when @huggingface/transformers is unavailable
+    if (!embedding) return null;
 
     const hasher = getLSHHasher(logger);
     const lshBuckets = hasher ? hasher.hash(embedding) : [];
@@ -1045,17 +1048,20 @@ const plugin = {
 
             // 6b. Cosine similarity threshold gate — skip results when the
             //     best match is below the minimum relevance threshold.
-            const maxCosine = Math.max(
-              ...reranked.map((r) => r.cosineSimilarity ?? 0),
-            );
-            if (maxCosine < COSINE_THRESHOLD) {
-              api.logger.info(
-                `Recall: cosine threshold gate filtered results (max=${maxCosine.toFixed(3)}, threshold=${COSINE_THRESHOLD})`,
+            //     Only apply when embeddings are available (otherwise cosine is always 0).
+            if (queryEmbedding) {
+              const maxCosine = Math.max(
+                ...reranked.map((r) => r.cosineSimilarity ?? 0),
               );
-              return {
-                content: [{ type: 'text', text: 'No relevant memories found for this query.' }],
-                details: { count: 0, memories: [] },
-              };
+              if (maxCosine < COSINE_THRESHOLD) {
+                api.logger.info(
+                  `Recall: cosine threshold gate filtered results (max=${maxCosine.toFixed(3)}, threshold=${COSINE_THRESHOLD})`,
+                );
+                return {
+                  content: [{ type: 'text', text: 'No relevant memories found for this query.' }],
+                  details: { count: 0, memories: [] },
+                };
+              }
             }
 
             // 7. Format results.
@@ -1618,14 +1624,17 @@ const plugin = {
 
             // 6b. Cosine similarity threshold gate — skip injection when the
             //     best match is below the minimum relevance threshold.
-            const hookMaxCosine = Math.max(
-              ...reranked.map((r) => r.cosineSimilarity ?? 0),
-            );
-            if (hookMaxCosine < COSINE_THRESHOLD) {
-              api.logger.info(
-                `Hook: cosine threshold gate filtered results (max=${hookMaxCosine.toFixed(3)}, threshold=${COSINE_THRESHOLD})`,
+            //     Only apply when embeddings are available (otherwise cosine is always 0).
+            if (queryEmbedding) {
+              const hookMaxCosine = Math.max(
+                ...reranked.map((r) => r.cosineSimilarity ?? 0),
               );
-              return undefined;
+              if (hookMaxCosine < COSINE_THRESHOLD) {
+                api.logger.info(
+                  `Hook: cosine threshold gate filtered results (max=${hookMaxCosine.toFixed(3)}, threshold=${COSINE_THRESHOLD})`,
+                );
+                return undefined;
+              }
             }
 
             // 7. Build context string.
