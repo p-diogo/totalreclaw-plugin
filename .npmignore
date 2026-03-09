@@ -1,0 +1,12 @@
+# Test files
+*.test.ts
+
+# CI/CD
+.github/
+
+# Git
+.git/
+.gitignore
+
+# Dependencies
+node_modules/
