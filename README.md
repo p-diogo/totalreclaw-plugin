@@ -81,18 +81,36 @@ Your recovery phrase is a 12-word BIP-39 mnemonic -- like a crypto wallet seed. 
 | `TOTALRECLAW_SUBGRAPH_MODE` | `true` | Enable on-chain storage |
 | `TOTALRECLAW_EXTRACT_EVERY_TURNS` | `5` | Turns between automatic extractions |
 
-## Comparison
+## How TotalReclaw compares
 
-| Feature | TotalReclaw | Mem0 |
-|---------|-------------|------|
-| Encryption | Client-side (zero-knowledge) | Server-side (server can read) |
-| Data portability | One-click plaintext export | No export |
-| Key management | BIP-39 seed phrase (user-controlled) | Server-managed keys |
-| Search method | Blind-index + encrypted reranking | Plaintext vector search |
-| On-chain storage | Yes (Gnosis Chain subgraph) | No |
-| Cross-device | Same seed = same memories | Tied to account |
+Every AI memory tool stores your data on a server that can read it. TotalReclaw is the only one that encrypts on your device first -- a compromised server reveals nothing.
 
-The fundamental difference: with TotalReclaw, even a compromised server reveals nothing.
+| | TotalReclaw | Mem0 | Zep | Letta | MCP Memory | memU |
+|---|---|---|---|---|---|---|
+| **Server sees plaintext** | Never | Yes | Yes | Yes | N/A (local) | Yes |
+| **Client-side E2EE** | AES-256-GCM | No | No | No | No | No |
+| **Cross-device sync** | Seed phrase | Account | Account | Account | No | Account |
+| **Data export** | One-click plaintext | JSON (7-day link) | No | Via API | Copy file | No |
+| **On-chain storage** | Gnosis Chain | No | No | No | No | No |
+| **Self-hostable** | Yes | Yes | No | Yes | Yes (local) | Yes |
+| **OpenClaw plugin** | Yes | Yes | No | No | No | Yes |
+| **MCP server** | Yes | Yes | No | No | Yes | No |
+| **Knowledge graph** | No | Yes ($249/mo) | Yes | Yes | Simple | No |
+| **Free tier** | 100 writes/mo | 10K memories | 1K credits | 3 agents | Unlimited | Varies |
+
+### Where TotalReclaw wins
+
+- **Zero-knowledge encryption** -- No other memory tool encrypts client-side. Mem0 and Zep offer SOC 2 and HIPAA, but their servers still process your plaintext. TotalReclaw's server only ever sees encrypted blobs.
+- **Seed-phrase portability** -- One 12-word phrase, any device, any agent. No accounts, no passwords, no vendor. Works like a crypto wallet.
+- **On-chain anchoring** -- Memories are stored on Gnosis Chain and indexed by The Graph. No single server controls your data.
+- **True data ownership** -- One-click plaintext export. No 7-day expiry links, no API-only access. Your data, your format.
+
+### Where others win
+
+- **Knowledge graphs** -- Zep's temporal graph tracks how facts evolve over time. Mem0's graph memory ($249/mo) maps entity relationships. TotalReclaw can't build graphs because the server can't read the data -- that's the privacy trade-off.
+- **Ecosystem maturity** -- Mem0 has 49K GitHub stars, $24M in funding, and integrations with every major framework. TotalReclaw is a beta product.
+- **Offline simplicity** -- The official MCP Memory Server and Engram need zero network, zero accounts, zero setup. Good enough for single-device use.
+- **Enterprise compliance** -- Mem0 and Zep offer SOC 2, HIPAA, RBAC, SSO. TotalReclaw doesn't need most of these (zero-knowledge means there's nothing to comply about), but enterprises want the paperwork.
 
 ## Links
 

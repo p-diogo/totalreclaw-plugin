@@ -1,6 +1,6 @@
 {
   "name": "@totalreclaw/totalreclaw",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Zero-knowledge encrypted memory vault for AI agents — the password manager for AI memory.",
   "type": "module",
   "license": "MIT",
