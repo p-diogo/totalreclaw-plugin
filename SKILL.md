@@ -208,6 +208,28 @@ Check subscription status and usage quota.
 
 ---
 
+### totalreclaw_generate_recovery_phrase
+
+Generate a cryptographically secure 12-word BIP-39 recovery phrase for new users. **Always use this tool** — never generate mnemonic words yourself.
+
+**Parameters:** None
+
+**Example:**
+```json
+{}
+```
+
+**Returns:**
+```json
+{
+  "mnemonic": "abandon ability able about above absent absorb abstract absurd abuse access accident",
+  "wordCount": 12,
+  "instructions": ["Display this phrase prominently to the user.", "..."]
+}
+```
+
+---
+
 ## Post-Install Setup
 
 After installing TotalReclaw, the agent MUST complete setup automatically. **Do NOT ask the user to set environment variables manually.**
@@ -227,7 +249,7 @@ The master password is a **12-word BIP-39 mnemonic** — like a crypto wallet se
 Ask the user:
 > "Do you have an existing TotalReclaw recovery phrase you'd like to restore, or should I generate a new one?"
 
-- **New user:** Generate a random 12-word BIP-39 mnemonic and set it as `TOTALRECLAW_MASTER_PASSWORD`. Then display it prominently with a warning:
+- **New user:** Call the `totalreclaw_generate_recovery_phrase` tool to generate a cryptographically secure 12-word BIP-39 mnemonic. **NEVER generate mnemonic words yourself** — always use this tool. Then set it as `TOTALRECLAW_MASTER_PASSWORD` and display it prominently with a warning:
   > "⚠️ SAVE YOUR RECOVERY PHRASE — it's the only way to recover your memories if you switch devices: `[phrase]`"
 - **Returning user:** Ask them to provide their existing 12-word phrase, then set it as `TOTALRECLAW_MASTER_PASSWORD`.
 

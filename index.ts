@@ -7,6 +7,7 @@
  *   - totalreclaw_forget    -- soft-delete a memory
  *   - totalreclaw_export    -- export all memories (JSON or Markdown)
  *   - totalreclaw_status    -- check billing/subscription status
+ *   - totalreclaw_generate_recovery_phrase -- generate secure BIP-39 mnemonic
  *
  * Also registers a `before_agent_start` hook that automatically injects
  * relevant memories into the agent's context.
@@ -23,6 +24,7 @@ import {
   decrypt,
   generateBlindIndices,
   generateContentFingerprint,
+  generateSecureMnemonic,
 } from './crypto.js';
 import { createApiClient, type StoreFactPayload } from './api-client.js';
 import { extractFacts, type ExtractedFact } from './extractor.js';
@@ -361,7 +363,7 @@ async function initialize(logger: OpenClawPluginApi['logger']): Promise<void> {
 
 const SETUP_ERROR_MSG =
   'TotalReclaw setup required. Follow the "Post-Install Setup" steps in SKILL.md:\n' +
-  '1. Set TOTALRECLAW_MASTER_PASSWORD — ask the user if they have an existing recovery phrase or generate a new 12-word BIP-39 mnemonic.\n' +
+  '1. Set TOTALRECLAW_MASTER_PASSWORD — ask the user if they have an existing recovery phrase, or call totalreclaw_generate_recovery_phrase to generate a secure one.\n' +
   '2. Set TOTALRECLAW_SUBGRAPH_MODE=true\n' +
   '3. Restart the gateway to apply changes.';
 
@@ -1394,6 +1396,49 @@ const plugin = {
     );
 
     // ---------------------------------------------------------------
+    // Tool: totalreclaw_generate_recovery_phrase
+    // ---------------------------------------------------------------
+
+    api.registerTool(
+      {
+        name: 'totalreclaw_generate_recovery_phrase',
+        label: 'Generate Recovery Phrase',
+        description:
+          'Generate a cryptographically secure 12-word BIP-39 recovery phrase. ' +
+          'Call this during onboarding when the user needs a new recovery phrase. ' +
+          'NEVER generate mnemonics yourself — always use this tool.',
+        parameters: {
+          type: 'object',
+          properties: {},
+          additionalProperties: false,
+        },
+        execute() {
+          const mnemonic = generateSecureMnemonic();
+
+          return {
+            content: [
+              {
+                type: 'text',
+                text: JSON.stringify({
+                  mnemonic,
+                  wordCount: 12,
+                  instructions: [
+                    'Display this phrase prominently to the user.',
+                    'Warn them to save it — it is the ONLY way to recover their memories.',
+                    'Set it as TOTALRECLAW_MASTER_PASSWORD in the OpenClaw config.',
+                    'Set TOTALRECLAW_SUBGRAPH_MODE=true.',
+                    'Restart the gateway to apply changes.',
+                  ],
+                }),
+              },
+            ],
+          };
+        },
+      },
+      { name: 'totalreclaw_generate_recovery_phrase' },
+    );
+
+    // ---------------------------------------------------------------
     // Hook: before_agent_start
     // ---------------------------------------------------------------
 
@@ -1419,7 +1464,8 @@ const plugin = {
               prependContext:
                 '## TotalReclaw Setup Required\n\n' +
                 'TotalReclaw is installed but needs configuration. Follow the "Post-Install Setup" steps in SKILL.md to complete setup.\n' +
-                'Ask the user: "Do you have an existing TotalReclaw recovery phrase, or should I generate a new one?"',
+                'Ask the user: "Do you have an existing TotalReclaw recovery phrase, or should I generate a new one?"\n' +
+                'If they want a new one, call the `totalreclaw_generate_recovery_phrase` tool — NEVER generate mnemonic words yourself.',
             };
           }
 

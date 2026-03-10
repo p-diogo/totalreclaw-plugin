@@ -22,7 +22,7 @@ import { argon2id } from '@noble/hashes/argon2.js';
 import { hkdf } from '@noble/hashes/hkdf.js';
 import { sha256 } from '@noble/hashes/sha2.js';
 import { hmac } from '@noble/hashes/hmac.js';
-import { mnemonicToSeedSync, validateMnemonic } from '@scure/bip39';
+import { generateMnemonic as bip39GenerateMnemonic, mnemonicToSeedSync, validateMnemonic } from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english.js';
 import { stemmer } from 'porter-stemmer';
 import crypto from 'node:crypto';
@@ -54,6 +54,14 @@ function isBip39Mnemonic(input: string): boolean {
   const words = input.trim().split(/\s+/);
   if (words.length !== 12 && words.length !== 24) return false;
   return validateMnemonic(input.trim(), wordlist);
+}
+
+/**
+ * Generate a cryptographically secure 12-word BIP-39 mnemonic.
+ * Uses 128 bits of entropy from Node's CSPRNG via @scure/bip39.
+ */
+export function generateSecureMnemonic(): string {
+  return bip39GenerateMnemonic(wordlist, 128);
 }
 
 /**
