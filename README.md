@@ -85,18 +85,19 @@ Your recovery phrase is a 12-word BIP-39 mnemonic -- like a crypto wallet seed. 
 
 Every AI memory tool stores your data on a server that can read it. TotalReclaw is the only one that encrypts on your device first -- a compromised server reveals nothing.
 
-| | TotalReclaw | Mem0 | Zep | Letta | MCP Memory | memU |
-|---|---|---|---|---|---|---|
-| **Server sees plaintext** | Never | Yes | Yes | Yes | N/A (local) | Yes |
-| **Client-side E2EE** | AES-256-GCM | No | No | No | No | No |
-| **Cross-device sync** | Seed phrase | Account | Account | Account | No | Account |
-| **Data export** | One-click plaintext | JSON (7-day link) | No | Via API | Copy file | No |
-| **On-chain storage** | Gnosis Chain | No | No | No | No | No |
-| **Self-hostable** | Yes | Yes | No | Yes | Yes (local) | Yes |
-| **OpenClaw plugin** | Yes | Yes | No | No | No | Yes |
-| **MCP server** | Yes | Yes | No | No | Yes | No |
-| **Knowledge graph** | No | Yes ($249/mo) | Yes | Yes | Simple | No |
-| **Free tier** | 100 writes/mo | 10K memories | 1K credits | 3 agents | Unlimited | Varies |
+| | TotalReclaw | Mem0 | Zep | Letta | MemoClaw | MCP Memory | memU |
+|---|---|---|---|---|---|---|---|
+| **Server sees plaintext** | Never | Yes | Yes | Yes | Yes | N/A (local) | Yes |
+| **Client-side E2EE** | AES-256-GCM | No | No | No | No | No | No |
+| **Cross-device sync** | Seed phrase | Account | Account | Account | Wallet | No | Account |
+| **Data export** | One-click plaintext | JSON (7-day link) | No | Via API | No | Copy file | No |
+| **On-chain storage** | Gnosis Chain | No | No | No | Payments only | No | No |
+| **Self-hostable** | Yes | Yes | No | Yes | No | Yes (local) | Yes |
+| **Open source** | Yes (full) | Yes (client+server) | Partial (Graphiti) | Yes | Partial (SDK only) | Yes | Yes |
+| **OpenClaw plugin** | Yes | Yes | No | No | Yes | No | Yes |
+| **MCP server** | Yes | Yes | No | No | Yes | Yes | No |
+| **Knowledge graph** | No | Yes ($249/mo) | Yes | Yes | No | Simple | No |
+| **Free tier** | 100 writes/mo | 10K memories | 1K credits | 3 agents | 100 calls | Unlimited | Varies |
 
 ### Where TotalReclaw wins
 
@@ -104,6 +105,10 @@ Every AI memory tool stores your data on a server that can read it. TotalReclaw 
 - **Seed-phrase portability** -- One 12-word phrase, any device, any agent. No accounts, no passwords, no vendor. Works like a crypto wallet.
 - **On-chain anchoring** -- Memories are stored on Gnosis Chain and indexed by The Graph. No single server controls your data.
 - **True data ownership** -- One-click plaintext export. No 7-day expiry links, no API-only access. Your data, your format.
+
+### What about MemoClaw?
+
+MemoClaw shares the crypto-native ethos -- wallet auth, USDC payments on Base. But the similarity is surface-level. MemoClaw uses crypto for *identity and payments*; TotalReclaw uses it for *data sovereignty*. MemoClaw's server stores your memories in plaintext on closed-source infrastructure (the SDK is MIT, but the server code is proprietary and not self-hostable). You're trusting a single operator with your data -- the same model as any other cloud service, just with a wallet instead of a password.
 
 ### Where others win
 
