@@ -46,6 +46,7 @@ TotalReclaw also ships a standalone MCP server for Claude Desktop, Cursor, and o
 | `totalreclaw_forget` | Delete a specific memory (on-chain tombstone) |
 | `totalreclaw_export` | Export all memories as plaintext |
 | `totalreclaw_status` | Check subscription tier and quota |
+| `totalreclaw_import_from` | Import memories from Mem0, MCP Memory Server, or other tools |
 | `totalreclaw_generate_recovery_phrase` | Generate a secure 12-word BIP-39 mnemonic (onboarding) |
 
 ## Lifecycle hooks
