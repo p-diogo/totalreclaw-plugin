@@ -90,7 +90,7 @@ Every AI memory tool stores your data on a server that can read it. TotalReclaw 
 |---|---|---|---|---|---|---|---|
 | **Server sees plaintext** | Never | Yes | Yes | Yes | Yes | N/A (local) | Yes |
 | **Client-side E2EE** | AES-256-GCM | No | No | No | No | No | No |
-| **Cross-device sync** | Seed phrase | Account | Account | Account | Wallet | No | Account |
+| **Cross-device sync** | Recovery phrase | Account | Account | Account | Wallet | No | Account |
 | **Data export** | One-click plaintext | JSON (7-day link) | No | Via API | No | Copy file | No |
 | **On-chain storage** | Gnosis Chain | No | No | No | Payments only | No | No |
 | **Self-hostable** | Yes | Yes | No | Yes | No | Yes (local) | Yes |

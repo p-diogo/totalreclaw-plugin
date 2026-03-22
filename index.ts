@@ -262,21 +262,21 @@ async function getFactCount(logger: OpenClawPluginApi['logger']): Promise<number
 // Initialisation
 // ---------------------------------------------------------------------------
 
-/** True when master password is missing — tools return setup instructions. */
+/** True when recovery phrase is missing — tools return setup instructions. */
 let needsSetup = false;
 
 /**
- * Derive keys from the master password, load or create credentials, and
+ * Derive keys from the recovery phrase, load or create credentials, and
  * register with the server if this is the first run.
  */
 async function initialize(logger: OpenClawPluginApi['logger']): Promise<void> {
   const serverUrl =
     process.env.TOTALRECLAW_SERVER_URL || 'https://api.totalreclaw.xyz';
-  const masterPassword = process.env.TOTALRECLAW_MASTER_PASSWORD;
+  const masterPassword = process.env.TOTALRECLAW_RECOVERY_PHRASE;
 
   if (!masterPassword) {
     needsSetup = true;
-    logger.info('TOTALRECLAW_MASTER_PASSWORD not set — setup required (see SKILL.md Post-Install Setup)');
+    logger.info('TOTALRECLAW_RECOVERY_PHRASE not set — setup required (see SKILL.md Post-Install Setup)');
     return;
   }
 
@@ -363,7 +363,7 @@ async function initialize(logger: OpenClawPluginApi['logger']): Promise<void> {
 
 const SETUP_ERROR_MSG =
   'TotalReclaw setup required. Follow the "Post-Install Setup" steps in SKILL.md:\n' +
-  '1. Set TOTALRECLAW_MASTER_PASSWORD — ask the user if they have an existing recovery phrase, or call totalreclaw_generate_recovery_phrase to generate a secure one.\n' +
+  '1. Set TOTALRECLAW_RECOVERY_PHRASE — ask the user if they have an existing recovery phrase, or call totalreclaw_generate_recovery_phrase to generate a secure one.\n' +
   '2. Set TOTALRECLAW_SUBGRAPH_MODE=true\n' +
   '3. Restart the gateway to apply changes.';
 
@@ -392,7 +392,7 @@ async function requireFullSetup(logger: OpenClawPluginApi['logger']): Promise<vo
 // LSH + Embedding helpers
 // ---------------------------------------------------------------------------
 
-/** Master password cached for LSH seed derivation (set during initialize()). */
+/** Recovery phrase cached for LSH seed derivation (set during initialize()). */
 let masterPasswordCache: string | null = null;
 /** Salt cached for LSH seed derivation (set during initialize()). */
 let saltCache: Buffer | null = null;
@@ -401,7 +401,7 @@ let saltCache: Buffer | null = null;
  * Get or initialize the LSH hasher.
  *
  * The hasher is created lazily because it needs:
- *   1. The master password + salt (available after initialize())
+ *   1. The recovery phrase + salt (available after initialize())
  *   2. The embedding dimensions (available after initLLMClient())
  *
  * If the provider doesn't support embeddings, this returns null and
@@ -1425,7 +1425,7 @@ const plugin = {
                   instructions: [
                     'Display this phrase prominently to the user.',
                     'Warn them to save it — it is the ONLY way to recover their memories.',
-                    'Set it as TOTALRECLAW_MASTER_PASSWORD in the OpenClaw config.',
+                    'Set it as TOTALRECLAW_RECOVERY_PHRASE in the OpenClaw config.',
                     'Set TOTALRECLAW_SUBGRAPH_MODE=true.',
                     'Restart the gateway to apply changes.',
                   ],

@@ -186,7 +186,7 @@ export async function submitFactOnChain(
   }
 
   if (!config.mnemonic) {
-    throw new Error('Mnemonic (TOTALRECLAW_MASTER_PASSWORD) is required for on-chain submission');
+    throw new Error('Mnemonic (TOTALRECLAW_RECOVERY_PHRASE) is required for on-chain submission');
   }
 
   const chain = getChainFromId(config.chainId);
@@ -293,7 +293,7 @@ export function isSubgraphMode(): boolean {
  * Get subgraph configuration from environment variables.
  *
  * After the relay refactor, clients only need:
- *   - TOTALRECLAW_MASTER_PASSWORD -- BIP-39 mnemonic
+ *   - TOTALRECLAW_RECOVERY_PHRASE -- BIP-39 mnemonic
  *   - TOTALRECLAW_SERVER_URL -- relay server URL (default: http://localhost:8000)
  *   - TOTALRECLAW_SUBGRAPH_MODE -- set "false" to disable (default: enabled with valid mnemonic)
  *   - TOTALRECLAW_CHAIN_ID -- optional, defaults to 10200 (Chiado)
@@ -332,7 +332,7 @@ export async function deriveSmartAccountAddress(mnemonic: string, chainId?: numb
 export function getSubgraphConfig(): SubgraphStoreConfig {
   return {
     relayUrl: process.env.TOTALRECLAW_SERVER_URL || 'http://localhost:8000',
-    mnemonic: process.env.TOTALRECLAW_MASTER_PASSWORD || '',
+    mnemonic: process.env.TOTALRECLAW_RECOVERY_PHRASE || '',
     cachePath: process.env.TOTALRECLAW_CACHE_PATH || `${process.env.HOME}/.totalreclaw/cache.enc`,
     chainId: parseInt(process.env.TOTALRECLAW_CHAIN_ID || '10200'),
     dataEdgeAddress: process.env.TOTALRECLAW_DATA_EDGE_ADDRESS || DEFAULT_DATA_EDGE_ADDRESS,
