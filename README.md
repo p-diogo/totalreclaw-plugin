@@ -1,17 +1,17 @@
 # TotalReclaw
 
-Zero-knowledge encrypted memory vault for AI agents. Your agent remembers -- only you can read it.
+End-to-end encrypted memory for AI agents — portable, yours forever.
 
 ## What it does
 
 TotalReclaw gives your AI agent persistent, encrypted memory that works across sessions and devices. Memories are encrypted on your device before they reach any server. Not even TotalReclaw can read your data.
 
-- **True zero-knowledge E2EE** -- Client-side AES-256-GCM encryption. The server only sees encrypted blobs.
+- **End-to-end encrypted** -- Client-side AES-256-GCM encryption. The server only sees encrypted blobs.
 - **Portable** -- One-click plaintext export. No vendor lock-in.
 - **Automatic** -- Memory extraction and recall happen via lifecycle hooks. No manual commands needed.
 - **Cross-device** -- Same 12-word recovery phrase restores all your memories on any device.
 - **98.1% recall** -- Blind-index search with BM25 + cosine + RRF fusion reranking.
-- **Free tier** -- 100 writes/month, unlimited reads. Upgrade at [totalreclaw.xyz/pricing](https://totalreclaw.xyz/pricing).
+- **Free tier available** -- Generous free tier included. See [pricing](https://totalreclaw.xyz/pricing) for details.
 
 ## Install
 
@@ -63,21 +63,21 @@ Your recovery phrase is a 12-word BIP-39 mnemonic -- like a crypto wallet seed. 
 
 - **New user**: The plugin generates a random phrase and displays it once. Save it somewhere safe.
 - **Returning user**: Enter your existing phrase to restore all your memories on a new device.
-- **Lost phrase**: Memories cannot be recovered. This is the zero-knowledge guarantee.
+- **Lost phrase**: Memories cannot be recovered. This is the end-to-end encryption guarantee.
 
 ## Privacy and security
 
 - All encryption happens client-side (AES-256-GCM + HKDF key derivation)
 - The server stores only encrypted blobs and blind indices
 - On-chain storage via Gnosis Chain (The Graph subgraph) -- fully auditable
-- Master password never leaves your device
+- Recovery phrase never leaves your device
 - One-click plaintext export -- no vendor lock-in
 
 ## Configuration
 
 | Environment variable | Default | Description |
 |---------------------|---------|-------------|
-| `TOTALRECLAW_MASTER_PASSWORD` | *(required)* | 12-word BIP-39 recovery phrase |
+| `TOTALRECLAW_RECOVERY_PHRASE` | *(required)* | 12-word BIP-39 recovery phrase |
 | `TOTALRECLAW_SERVER_URL` | `https://api.totalreclaw.xyz` | Relay server URL |
 | `TOTALRECLAW_SUBGRAPH_MODE` | `true` | Enable on-chain storage |
 | `TOTALRECLAW_EXTRACT_EVERY_TURNS` | `5` | Turns between automatic extractions |
@@ -98,11 +98,11 @@ Every AI memory tool stores your data on a server that can read it. TotalReclaw 
 | **OpenClaw plugin** | Yes | Yes | No | No | Yes | No | Yes |
 | **MCP server** | Yes | Yes | No | No | Yes | Yes | No |
 | **Knowledge graph** | No | Yes ($249/mo) | Yes | Yes | No | Simple | No |
-| **Free tier** | 100 writes/mo | 10K memories | 1K credits | 3 agents | 100 calls | Unlimited | Varies |
+| **Free tier** | [Generous](https://totalreclaw.xyz/pricing) | 10K memories | 1K credits | 3 agents | 100 calls | Unlimited | Varies |
 
 ### Where TotalReclaw wins
 
-- **Zero-knowledge encryption** -- No other memory tool encrypts client-side. Mem0 and Zep offer SOC 2 and HIPAA, but their servers still process your plaintext. TotalReclaw's server only ever sees encrypted blobs.
+- **End-to-end encryption** -- No other memory tool encrypts client-side. Mem0 and Zep offer SOC 2 and HIPAA, but their servers still process your plaintext. TotalReclaw's server only ever sees encrypted blobs.
 - **Seed-phrase portability** -- One 12-word phrase, any device, any agent. No accounts, no passwords, no vendor. Works like a crypto wallet.
 - **On-chain anchoring** -- Memories are stored on Gnosis Chain and indexed by The Graph. No single server controls your data.
 - **True data ownership** -- One-click plaintext export. No 7-day expiry links, no API-only access. Your data, your format.
@@ -116,7 +116,7 @@ MemoClaw shares the crypto-native ethos -- wallet auth, USDC payments on Base. B
 - **Knowledge graphs** -- Zep's temporal graph tracks how facts evolve over time. Mem0's graph memory ($249/mo) maps entity relationships. TotalReclaw can't build graphs because the server can't read the data -- that's the privacy trade-off.
 - **Ecosystem maturity** -- Mem0 has 49K GitHub stars, $24M in funding, and integrations with every major framework. TotalReclaw is a beta product.
 - **Offline simplicity** -- The official MCP Memory Server and Engram need zero network, zero accounts, zero setup. Good enough for single-device use.
-- **Enterprise compliance** -- Mem0 and Zep offer SOC 2, HIPAA, RBAC, SSO. TotalReclaw doesn't need most of these (zero-knowledge means there's nothing to comply about), but enterprises want the paperwork.
+- **Enterprise compliance** -- Mem0 and Zep offer SOC 2, HIPAA, RBAC, SSO. TotalReclaw doesn't need most of these (E2EE means there's nothing to comply about), but enterprises want the paperwork.
 
 ## Links
 
